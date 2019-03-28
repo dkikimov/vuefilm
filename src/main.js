@@ -3,14 +3,14 @@
 
 import Uimini from 'uimini/dist/css/uimini.css'
 
+import Vuelidate from 'vuelidate'
 import Vue from 'vue'
 import App from './App'
 import router from './router'
 import store from './store'
+
 Vue.config.productionTip = false
-Vue.use(
-  Uimini
-)
+Vue.use(Vuelidate, Uimini)
 /* eslint-disable no-new */
 
 new Vue({

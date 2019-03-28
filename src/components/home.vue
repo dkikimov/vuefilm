@@ -223,8 +223,7 @@ export default {
     }
   }
 }
-input, textarea
-  font-family: 'Montserrat', Helvetica, Arial, sans-serif;
+
 .total-time {
   margin-bottom: 20px;
 }
@@ -269,4 +268,8 @@ input, textarea
   margin-bottom 0
   margin-right 10px
   height 42px
+</style>
+<style lang="stylus">
+input, textarea, button
+  font-family: 'Montserrat', Helvetica, Arial, sans-serif;
 </style>
