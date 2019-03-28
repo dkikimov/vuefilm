@@ -93,16 +93,20 @@
             ) Send
           // All Tags
           .tag-list
-            .ui-tag__wrapper(
-              v-for="tag in tags"
-              :key="tag.title"
+            transition-group(
+              enter-active-class="animated fadeInRight"
+              leave-active-class="animated fadeOutDown"
             )
-              .ui-tag(
-                @click="addTagUsed(tag)"
-                :class="{active: tag.use}"
+              .ui-tag__wrapper(
+                v-for="tag in tags"
+                :key="tag.title"
               )
-                span.tag-title {{ tag.title }}
-                span.button-close
+                .ui-tag(
+                  @click="addTagUsed(tag)"
+                  :class="{active: tag.use}"
+                )
+                  span.tag-title {{ tag.title }}
+                  span.button-close
         .button.button-primary.button--round.sendButton(
           @click="newTask"
         ) Send
@@ -201,42 +205,30 @@ export default {
 <style lang="stylus" scoped>
 .serialTime
   margin-bottom 15px
-.option-list {
+.option-list
   display: flex;
   align-items: center;
   margin-bottom: 20px;
-
-  .what-watch--radio {
+  .what-watch--radio
     margin-right: 12px;
-  }
-
-  input {
+  input
     margin-bottom: 0;
-  }
-
-  label {
+  label
     margin-right: 20px;
     margin-bottom: 0;
-
-    &.last-child {
+    &.last-child
       margin-right: 0;
-    }
-  }
-}
 
-.total-time {
+.total-time
   margin-bottom: 20px;
-}
 
-.time-title {
+.time-title
   display: block;
   margin-bottom: 6px;
-}
 
-.time-input {
+.time-input
   max-width: 80px;
   margin-right: 10px;
-}
 
 .tag-list
   margin-bottom 20px
@@ -268,8 +260,4 @@ export default {
   margin-bottom 0
   margin-right 10px
   height 42px
-</style>
-<style lang="stylus">
-input, textarea, button
-  font-family: 'Montserrat', Helvetica, Arial, sans-serif;
 </style>

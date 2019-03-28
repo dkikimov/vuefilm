@@ -1,14 +1,27 @@
-.fadeInDown
-  animation: fadeInDown .3s;
+.taskList-enter-active, .taskList-leave-active
+  transition: all .6s
 
-.fadeOutUp
-  animation: fadeOutUp .3s;
+.taskList-enter, .taskList-leave-to
+  opacity 0
+  transform: translateY(10px)
 
-@keyframes fadeInDown {
+.fade-enter-active, .fade-leave-active
+  transition opacity .2s
+
+.fade-enter, .fade-leave-to
+  opacity 0
+
+.animated
+  animation-duration: .4s
+  animation-fill-mode: both
+
+.fadeInRight
+  animation-name: fadeInRight
+@keyframes fadeInRight {
   from {
     opacity: 0;
-    -webkit-transform: translate3d(0, -100%, 0);
-    transform: translate3d(0, -100%, 0);
+    -webkit-transform: translate3d(100%, 0, 0);
+    transform: translate3d(100%, 0, 0);
   }
 
   to {
@@ -17,15 +30,31 @@
     transform: translate3d(0, 0, 0);
   }
 }
-
-@keyframes fadeOutUp {
+.fadeOutDown
+  animation-name: fadeOutDown
+@keyframes fadeOutDown {
   from {
     opacity: 1;
   }
 
   to {
     opacity: 0;
-    -webkit-transform: translate3d(0, -100%, 0);
-    transform: translate3d(0, -100%, 0);
+    -webkit-transform: translate3d(0, 100%, 0);
+    transform: translate3d(0, 100%, 0);
   }
+}
+.shake
+  animation-name: shake
+
+@keyframes shake {
+  from, to {
+    transform: translate3d(0,0,0)
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translate3d(-4px, 0, 0)
+  }
+  20%, 40%, 60%, 80% {
+    transform: translate3d(4px, 0, 0)
+  }
+
 }

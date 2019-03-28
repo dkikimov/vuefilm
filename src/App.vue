@@ -46,4 +46,6 @@ export default {
 </script>
 
 <style lang="stylus">
+input, textarea, button
+  font-family: 'Montserrat', Helvetica, Arial, sans-serif;
 </style>
