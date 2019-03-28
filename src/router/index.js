@@ -4,6 +4,7 @@ import Home from '@/components/home'
 import Login from '@/components/Auth/Login'
 import Registration from '@/components/Auth/Registration'
 import Task from '@/components/Task'
+import store from '../store'
 Vue.use(Router)
 
 export default new Router({
@@ -12,12 +13,18 @@ export default new Router({
     {
       path: '/',
       name: 'home',
-      component: Home
+      component: Home,
+      beforeEnter (to, from, next) {
+        store.getters.checkUser ? next() : next('/login')
+      }
     },
     {
       path: '/task',
       name: 'task',
-      component: Task
+      component: Task,
+      beforeEnter (to, from, next) {
+        store.getters.checkUser ? next() : next('/login')
+      }
     },
     {
       path: '/login',

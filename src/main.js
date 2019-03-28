@@ -36,5 +36,12 @@ new Vue({
       messagingSenderId: '280309660149'
     }
     firebase.initializeApp(config)
+
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        this.$store.dispatch('loggedUser', user)
+      }
+      this.$store.dispatch('loadTasks')
+    })
   }
 })

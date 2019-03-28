@@ -34,14 +34,17 @@
                 .error(v-if="!$v.password.minLength")
                   | Password must have at least {{ $v.password.$params.minLength.min }} letters.
               .buttons-list
-                button.button.button-primary(
+                button.button.button-primary.button--round(
                   type="submit"
                   :disabled="submitStatus === 'PENDING'"
-                ) Login
+                )
+                  span(v-if="loading") Loading...
+                  span(v-else) Login
               .buttons-list.buttons-list--info
                 p.typo__p(v-if="submitStatus === 'OK'") Thanks for your submission!
                 p.typo__p(v-if="submitStatus === 'ERROR'") Please fill the form correctly.
-                p.typo__p(v-if="submitStatus === 'PENDING'") Sending...
+                p.typo__p(v-else) {{ submitStatus }}
+                //- p.typo__p(v-if="submitStatus === 'PENDING'") Sending...
               .buttons-list.buttons-list--info
                 span Need account ?
                   router-link(to="/registration")  Enter here
@@ -79,12 +82,21 @@ export default {
           email: this.email,
           password: this.password
         }
-        console.log(user)
-        this.submitStatus = 'PENDING'
-        setTimeout(() => {
-          this.submitStatus = 'OK'
-        }, 500)
+        this.$store.dispatch('loginUser', user)
+          .then(() => {
+            console.log('ENTERED!')
+            this.submitStatus = 'OK'
+            this.$router.push('/')
+          })
+          .catch(err => {
+            this.submitStatus = err.message
+          })
       }
+    }
+  },
+  computed: {
+    loading () {
+      return this.$store.getters.loading
     }
   }
 }

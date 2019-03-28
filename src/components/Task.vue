@@ -45,13 +45,44 @@
                     )
                       .ui-tag
                         span.tag-title {{ tag.title }}
+                    .buttons-list
+                      .button.button--round.button-default(
+                        @click="taskEdit(task.id, task.title, task.description)"
+                      ) Edit
+                      .button.button--round.button-primary Done
+      .ui-messageBox__wrapper(
+        v-if="editing"
+        :class="{active: editing}"
+      )
+        .ui-messageBox.fadeInDown
+          .ui-messageBox__header
+            span.messageBox-title {{ titleEditing }}
+            span.button-close(@click="cancelTaskEdit")
+          .ui-messageBox__content
+            p Title
+            input(
+              type="text"
+              v-model="titleEditing"
+            )
+            p Description
+            textarea(
+              type="text",
+              v-model="descrEditing"
+            )
+          .ui-messageBox__footer
+            .button.button-light.button--round(@click="cancelTaskEdit") Cancel
+            .button.button-primary.button--round(@click="finishTaskEdit") OK
 </template>
 
 <script>
 export default {
   data () {
     return {
-      filter: 'active'
+      filter: 'active',
+      editing: false,
+      titleEditing: '',
+      descrEditing: '',
+      taskId: null
     }
   },
   computed: {
@@ -64,6 +95,28 @@ export default {
         return this.$store.getters.tasks
       }
       return this.filter === 'active'
+    }
+  },
+  methods: {
+    taskEdit (id, title, description) {
+      this.editing = !this.editing
+      this.titleEditing = title
+      this.descrEditing = description
+      this.taskId = id
+    },
+    cancelTaskEdit () {
+      this.editing = !this.editing
+      this.taskId = null
+      this.titleEditing = ''
+      this.descrEditing = ''
+    },
+    finishTaskEdit () {
+      this.$store.dispatch('editTask', {
+        id: this.taskId,
+        title: this.titleEditing,
+        description: this.descrEditing
+      })
+      this.editingPopup = !this.editingPopup
     }
   }
 }
@@ -130,7 +183,25 @@ export default {
     display: flex;
   }
 }
-
+.task-item__body
+  margin-bottom 20px
+.tag-list
+  margin-bottom 20px
+.task-item__footer
+    .buttons-list
+      text-align right
+.buttons-list
+  .button
+    margin-right 12px
+    &.last-child
+      margin-right 0
+.ui-messageBox
+  padding 15px
+.ui-messageBox__wrapper
+  &.active
+    display flex
+  .button-light
+    margin-right 8px
 .ui-label {
   margin-right: 8px;
 }
