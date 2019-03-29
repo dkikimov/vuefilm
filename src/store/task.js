@@ -17,6 +17,12 @@ export default {
       })
       task.title = title
       task.description = description
+    },
+    completedTask (state, {id, completed}) {
+      const task = state.tasks.find(t => {
+        return t.id === id
+      })
+      task.completed = completed
     }
   },
   actions: {
@@ -90,21 +96,52 @@ export default {
         commit('setError', error.message)
         throw error
       }
+    },
+    async deleteTask ({commit}, id) {
+      commit('clearError')
+      commit('setLoading', true)
+      try {
+        await firebase.database().ref('tasks').child(id).remove()
+        commit('setLoading', false)
+      } catch (error) {
+        commit('setLoading', false)
+        commit('setError', error.message)
+        throw error
+      }
+    },
+    async completedTask ({commit}, {id, completed}) {
+      commit('clearError')
+      commit('setLoading', true)
+      try {
+        // Update title & descr
+        await firebase.database().ref('tasks').child(id).update({completed})
+        // Send mutation
+        commit('completedTask', {id, completed})
+
+        commit('setLoading', false)
+      } catch (error) {
+        commit('setLoading', false)
+        commit('setError', error.message)
+        throw error
+      }
     }
   },
   getters: {
+    // Get All user Tasks
     tasks (state, getters) {
       return state.tasks.filter(task => {
         return task.user === getters.user.id
       })
     },
+    // Get user Completed Tasks
     taskCompleted (state, getters) {
       return getters.tasks.filter(task => {
         return task.completed
       })
     },
-    taskNotCompleted (state) {
-      return state.tasks.filter(task => {
+    // Get user Active Tasks
+    taskNotCompleted (state, getters) {
+      return getters.tasks.filter(task => {
         return task.completed === false
       })
     }

@@ -47,9 +47,7 @@
               .buttons-list
                 button.button.button-primary.button--round(
                   type="submit"
-                )
-                  span(v-if="loading") Loading...
-                  span(v-else) Registration
+                ) Registration
               .buttons-list.buttons-list--info
                 p.typo__p(v-if="submitStatus === 'OK'") Thanks for your submission!
                 p.typo__p(v-if="submitStatus === 'ERROR'") Please fill the form correctly.
@@ -111,18 +109,15 @@ export default {
         // }, 500)
       }
     }
-  },
-  computed: {
-    loading () {
-      return this.$store.getters.loading
-    }
   }
 }
 </script>
 
 <style lang="stylus" scoped>
 .auth
-  display flex
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
 .auth-banner,
 .auth-form
   width 50%

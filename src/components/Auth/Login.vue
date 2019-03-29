@@ -37,9 +37,7 @@
                 button.button.button-primary.button--round(
                   type="submit"
                   :disabled="submitStatus === 'PENDING'"
-                )
-                  span(v-if="loading") Loading...
-                  span(v-else) Login
+                ) Login
               .buttons-list.buttons-list--info
                 p.typo__p(v-if="submitStatus === 'OK'") Thanks for your submission!
                 p.typo__p(v-if="submitStatus === 'ERROR'") Please fill the form correctly.
@@ -93,21 +91,23 @@ export default {
           })
       }
     }
-  },
-  computed: {
-    loading () {
-      return this.$store.getters.loading
-    }
   }
 }
 </script>
 
 <style lang="stylus" scoped>
 .auth
-  display flex
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
 .auth-banner,
 .auth-form
   width 50%
+  @media screen and (max-width: 768px)
+    width 100%
+    margin-bottom 30px
+    &.last-child
+      margin-bottom 0
 .form-item
   .error
     margin-bottom 8px

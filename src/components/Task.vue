@@ -23,16 +23,21 @@
             .ui-card.ui-card--shadow
               .task-item__info
                 .task-item__main-info
-                  span.ui-label.ui-label--light {{ task.whatWatch }}
+                  span.ui-label(
+                    :class="[{ 'ui-label--primary': !task.completed }, { 'ui-label--light': task.completed  }]"
+                  ) {{ task.whatWatch }}
                   span(
                     v-if="task.time"
                   ) Total Time: {{ task.time }}
-                span.button-close
+                span.button-close(
+                  @click="deleteTask(task.id)"
+                )
               .task-item__content
                 .task-item__header
                   .ui-checkbox-wrapper
                     input#exampleCheckbox.ui-checkbox(type='checkbox'
                     v-model="task.completed"
+                    @click="taskCompleted(task.id, task.completed)"
                     )
                   span.ui-title-3 {{task.title}}
                 .task-item__body
@@ -49,7 +54,9 @@
                       .button.button--round.button-default(
                         @click="taskEdit(task.id, task.title, task.description)"
                       ) Edit
-                      .button.button--round.button-primary Done
+                      .button.button--round.button-primary(
+                        @click="taskCompleted(task.id, task.completed)"
+                      ) Done
       .ui-messageBox__wrapper(
         v-if="editing"
         :class="{active: editing}"
@@ -117,6 +124,23 @@ export default {
         description: this.descrEditing
       })
       this.editingPopup = !this.editingPopup
+    },
+    deleteTask (id) {
+      this.$store.dispatch('deleteTask', id)
+        .then(() => {
+          this.$store.dispatch('loadTasks')
+        })
+    },
+    taskCompleted (id, completed) {
+      completed ? completed = false : completed = true
+      this.$store.dispatch('completedTask', {
+        id,
+        completed
+      })
+        .then(() => {
+          console.log(completed)
+          // this.$store.dispatch('loadTasks')
+        })
     }
   }
 }

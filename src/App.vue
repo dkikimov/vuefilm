@@ -19,7 +19,7 @@
           )
             ul.navbar-list
               li.navbar-item(
-                v-for="link in linkMenu"
+                v-for="link in links"
                 :key="link.title"
                 @click="menuShow = false"
               )
@@ -31,10 +31,15 @@
                 @click="logoutUser"
               )
                 span.navbar-link Logout
-    router-view
+    router-view(:class="{blur: loading}")
+    .spinner(v-if="loading")
+      .bounce1
+      .bounce2
+      .bounce3
 </template>
 
 <script>
+import '@/assets/stylus/main.styl'
 export default {
   data () {
     return {
@@ -51,8 +56,9 @@ export default {
     checkUser () {
       return this.$store.getters.checkUser
     },
-    linkMenu () {
+    links () {
       if (this.checkUser) {
+        this.$router.push('/')
         return [
           { title: 'Home', url: '/' },
           { title: 'Tasks', url: '/task' }
@@ -62,12 +68,11 @@ export default {
         { title: 'Login', url: '/login' },
         { title: 'Registration', url: '/registration' }
       ]
+    },
+    loading () {
+      return this.$store.getters.loading
     }
   }
 }
 </script>
 
-<style lang="stylus">
-input, textarea, button
-  font-family: 'Montserrat', Helvetica, Arial, sans-serif;
-</style>
